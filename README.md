@@ -132,8 +132,10 @@ Other scripts: `scan1d.py`, `finescan1d.py`, `candidates1d.py`, `nks_repro.py`
 wall), `scan2d.py`, `cuts2d.py`, `filmstrip2d.py` (2-D), `restest.py`
 (Part I resolution tests).
 
-`ASSESSMENT.md` is the original analysis of the frames and `PROPOSAL.md` the
-theorem proposal that became Part I.
+`ASSESSMENT.md` is the original analysis of the frames, `PROPOSAL.md` the
+theorem proposal that became Part I, and `SELECTION_EXPERIMENT.md` a null
+result: a test of whether the box walls select structure types by their
+self-collision outcome (they do not, in this rule).
 
 ## Building the article
 
