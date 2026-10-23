@@ -79,9 +79,9 @@ is to say precisely what they are.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.3\textwidth]{parity_k150.png}\hfill
-\includegraphics[width=0.3\textwidth]{parity_k1000.png}\hfill
-\includegraphics[width=0.3\textwidth]{parity_k2000.png}
+\includegraphics[width=0.3\textwidth]{parity_k150.pdf}\hfill
+\includegraphics[width=0.3\textwidth]{parity_k1000.pdf}\hfill
+\includegraphics[width=0.3\textwidth]{parity_k2000.pdf}
 \caption{Parity of $\lfloor 10u\rfloor$ on the $64\times64$ grid at
 steps $150$, $1000$ and $2000$ of the explicit scheme with
 $\Delta t=2\cdot10^{-4}$, $\kappa=0.2$, reflecting walls. The field has a
@@ -263,18 +263,40 @@ quadratic, near the maximum and in the tails, the pattern is a sampled
 Fresnel zone plate. An undersampled zone plate replicates its centre:
 neighbouring cells agree in colour wherever $q\,h\,\partial_mu$ is near an
 even integer, so fake centres appear along the curves
-$\{qh\,\partial_mu\in2\Z\}$, $m=1,2$. Figure~\ref{fig:res} shows the same
-physical state at $64$ and $256$ cells with the same quantum: the island
-lattice is present at $64$ and absent at $256$, where the frame is an
-ordinary contour map. Table~\ref{tab:res} gives the measures. With the
+$\{qh\,\partial_mu\in2\Z\}$, $m=1,2$. Figure~\ref{fig:zoneplate} shows the effect
+in its purest form: the state at $t=0.03$, when the field still carries
+$832$ isotherms and the gradient at the edge of the square is about forty
+quanta per cell even on a $256^2$ grid. The true contour map would be a
+set of tightly nested rounded squares; what the lattice sees instead is
+a central zone plate surrounded by a ring of replica centres, each a
+small zone plate of its own, arranged on the curves where $qh\,\partial_mu$
+passes through even integers, with the quasi-periodic stripes of digital
+planes between them. Every feature of this picture is a property of the
+sampling: the field has one maximum, and its isotherms never cross.
+Figure~\ref{fig:res} shows the later state $t=0.4$ at $64$ and $256$
+cells with the same quantum: the island lattice is present at $64$ and
+absent at $256$, where the frame is an ordinary contour map. Table~\ref{tab:res} gives the measures. With the
 quantum scaled as $1/N$ instead, the measures are constant in $N$
 (perimeter per cell $0.879$, $0.894$, $0.893$): the texture depends on
 the single ratio $qh|\nabla u|$ and is scale-free undersampling.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.3\textwidth]{parity_k2000.png}\hfill
-\includegraphics[width=0.3\textwidth]{parity_late_N256.png}
+\includegraphics[width=0.6\textwidth]{parity_res_N256_t003.pdf}
+\caption{The parity pattern at $t=0.03$ on a $256^2$ grid, $q=10$,
+$832$ isotherms. An undersampled Fresnel zone plate: the central rings
+are the real contour map of the peak, the surrounding lattice of small
+concentric centres is moir\'e, replicas created where the local fringe
+frequency matches a multiple of the sampling frequency, and the striped
+sectors between them are digital planes. The figure is vector graphics;
+zooming in shows the individual cells.}
+\label{fig:zoneplate}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.3\textwidth]{parity_k2000.pdf}\hfill
+\includegraphics[width=0.3\textwidth]{parity_late_N256.pdf}
 \caption{Left: $64\times64$ grid at $t=0.4$ ($q=10$). Right: the same
 state on a $256\times256$ grid with the same quantum. The islands of the
 left frame are replicated zone-plate centres; the right frame is the
@@ -411,9 +433,9 @@ shows the space-time diagrams with periodic and with reflecting walls, and a mag
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=0.5\textheight]{class4_1d_a0.398_periodic.png}\hfill
-\includegraphics[height=0.5\textheight]{class4_1d_a0.398_mirror.png}\hfill
-\includegraphics[height=0.5\textheight]{class4_1d_wallzoom.png}
+\includegraphics[height=0.5\textheight]{class4_1d_a0.398_periodic.pdf}\hfill
+\includegraphics[height=0.5\textheight]{class4_1d_a0.398_mirror.pdf}\hfill
+\includegraphics[height=0.5\textheight]{class4_1d_wallzoom.pdf}
 \caption{Class 4 in one dimension: $a=0.398$, three-cell mean plus $a$
 modulo $1$, $300$ cells, $600$ steps downward from random data, same
 seed, difference display (black where neighbours differ). Left:
@@ -462,7 +484,7 @@ question becomes how phase walls and intermittent spots meet the box.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{cuts2d_spacetime.png}
+\includegraphics[width=\textwidth]{cuts2d_spacetime.pdf}
 \caption{Space-time cuts (middle row of a $128^2$ torus against the last
 $256$ of $1200$ steps, difference display) for
 $a=0.33,\,0.49,\,0.51,\,0.67,\,0.02,\,0.398$. Wandering phase walls at
@@ -473,8 +495,8 @@ lattice at $0.02$, chaos at $0.398$.}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{filmstrip2d_a0.33.png}\\[4pt]
-\includegraphics[width=\textwidth]{filmstrip2d_a0.49.png}
+\includegraphics[width=\textwidth]{filmstrip2d_a0.33.pdf}\\[4pt]
+\includegraphics[width=\textwidth]{filmstrip2d_a0.49.pdf}
 \caption{The $128^2$ box with mirror walls, difference display, at
 steps $0,50,100,200$ (top row of each strip) and $400,600,800,1200$
 (bottom row). Upper strip, $a=0.33$: random data collapse within fifty

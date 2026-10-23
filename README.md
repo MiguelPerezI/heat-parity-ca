@@ -113,7 +113,10 @@ mirror annihilates with its own image.
 ## Running the code
 
 Requirements: Python 3.12 with NumPy; pygame for the live viewer. No PIL is
-needed, PNGs are written by [`code/pngio.py`](code/pngio.py).
+needed, PNGs are written by [`code/pngio.py`](code/pngio.py), and
+[`code/png2pdf.py`](code/png2pdf.py) converts them into vector PDFs (one
+rectangle per run of equal cells) for the article, so the figures stay sharp
+at any zoom.
 
 ```
 cd code
