@@ -6,3 +6,6 @@ __pycache__/
 *.toc
 *.synctex.gz
 code/*.bak
+submission/
+submission.zip
+cover_letter.txt

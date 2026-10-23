@@ -4,7 +4,10 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage[labelfont=bf,labelsep=space]{caption}
 \usepackage{subcaption}
+\captionsetup[figure]{name=Fig.}
+\captionsetup[sub]{labelformat=parens,labelsep=space,labelfont=normalfont}
 \usepackage{microtype}
 \usepackage{xcolor}
 \usepackage{float}
@@ -82,13 +85,19 @@ note is to say precisely what they are.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.3\textwidth]{parity_k150.pdf}\hfill
-\includegraphics[width=0.3\textwidth]{parity_k1000.pdf}\hfill
-\includegraphics[width=0.3\textwidth]{parity_k2000.pdf}
+\begin{subfigure}{0.3\textwidth}\centering
+\includegraphics[width=\textwidth]{parity_k150.pdf}
+\caption{Step $150$}\end{subfigure}\hfill
+\begin{subfigure}{0.3\textwidth}\centering
+\includegraphics[width=\textwidth]{parity_k1000.pdf}
+\caption{Step $1000$}\end{subfigure}\hfill
+\begin{subfigure}{0.3\textwidth}\centering
+\includegraphics[width=\textwidth]{parity_k2000.pdf}
+\caption{Step $2000$}\end{subfigure}
 \caption{Parity of $\lfloor 10u\rfloor$ on the $64\times64$ grid at
 steps $150$, $1000$ and $2000$ of the explicit scheme with
 $\Delta t=2\cdot10^{-4}$, $\kappa=0.2$, reflecting walls. The field has a
-single maximum throughout.}
+single maximum throughout}
 \label{fig:frames}
 \end{figure}
 
@@ -249,7 +258,7 @@ step & $q\TV_h$ & $P_h(\theta=0)$ & $\overline{P_h}$ (MC) & $\sum_e\varphi(q|\De
 \caption{The random-phase identity \eqref{eq:phase} on the $64\times64$
 run of Figure~\ref{fig:frames}, $q=10$. The discrete total variation never
 increased; the perimeter peaks where the largest jump crosses one quantum;
-from then on $\overline{P_h}=q\TV_h$ to rounding.}
+from then on $\overline{P_h}=q\TV_h$ to rounding}
 \label{tab:phase}
 \end{table}
 
@@ -323,19 +332,22 @@ are the real contour map of the peak, the surrounding lattice of small
 concentric centres is moir\'e, replicas created where the local fringe
 frequency matches a multiple of the sampling frequency, and the striped
 sectors between them are digital planes. The figure is vector graphics;
-zooming in shows the individual cells.}
+zooming in shows the individual cells}
 \label{fig:zoneplate}
 \end{figure}
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.3\textwidth]{parity_k2000.pdf}\hfill
-\includegraphics[width=0.3\textwidth]{parity_late_N256.pdf}
-\caption{Left: $64\times64$ grid at $t=0.4$ ($q=10$). Right: the same
-state on a $256\times256$ grid with the same quantum. The islands of the
-left frame are replicated zone-plate centres; the right frame is the
+\begin{subfigure}{0.3\textwidth}\centering
+\includegraphics[width=\textwidth]{parity_k2000.pdf}
+\caption{$64\times64$ cells}\end{subfigure}\qquad
+\begin{subfigure}{0.3\textwidth}\centering
+\includegraphics[width=\textwidth]{parity_late_N256.pdf}
+\caption{$256\times256$ cells}\end{subfigure}
+\caption{The state at $t=0.4$ with the same quantum ($q=10$) on two
+grids. The islands of~(a) are replicated zone-plate centres; (b) is the
 contour map of the field, with its mirror images in the four corners
-produced by the reflecting walls.}
+produced by the reflecting walls}
 \label{fig:res}
 \end{figure}
 
@@ -352,7 +364,7 @@ $N$ & bands & perimeter$/N^2$ & $H_{2\times2}$ (bits) & components \\
 \end{tabular}
 \caption{Resolution test at $t=0.4$, $q=10$ fixed. Perimeter per cell
 halves with each doubling, as a fixed set of smooth curves does; the
-islands collapse into the real rings.}
+islands collapse into the real rings}
 \label{tab:res}
 \end{table}
 
@@ -448,7 +460,7 @@ each frame. Bottom: the parity of $\lfloor10^4u\rfloor$. The field is
 noise only at $t=0$; after that it is a smooth pattern that grows and
 settles into spots. The parity picture is faithful only in~(b). In~(c)
 it shows moir\'e, and in~(d) it is static, although the field is a few
-smooth spots.}
+smooth spots}
 \label{fig:glyco}
 \end{figure}
 
@@ -485,7 +497,7 @@ $|E|=20200$. The Monte-Carlo average of $P_h$ over $64$ phases agrees
 with the formula column to $0.5\%$ throughout. Flicker is the right side
 of \eqref{eq:flicker} between consecutive rows; the fraction of cells
 that changed colour, averaged over $64$ phases, agrees with it to
-$0.003$.}
+$0.003$}
 \label{tab:glyco}
 \end{table}
 
@@ -587,7 +599,21 @@ companion paper \cite{MirrorWalls} we take automata that do sustain
 persistent localized structures and ask whether the walls of a box act
 on them as a selecting environment.
 
+\section*{About the author}
+
+\noindent\textbf{Miguel Esteban P\'erez Ibarra} studied at the Escuela
+Superior de F\'isica y Matem\'aticas of the Instituto Polit\'ecnico
+Nacional in Mexico City, and works independently on discrete models of
+physical systems and on what their pictures do and do not show.\\[4pt]
+\textit{Mexico}\\
+\href{mailto:supersluky@gmail.com}{\texttt{supersluky@gmail.com}}
+
 \section*{Declarations}
+
+\paragraph{Data availability.} No external data were used. All data
+in the article are generated by the scripts listed below, which
+reproduce every table and figure exactly; their outputs are included in
+the repository.
 
 \paragraph{Code availability.} All scripts, the figures and the source
 of this article are public at
@@ -609,15 +635,6 @@ was used as an assistant in writing the analysis scripts, running the
 numerical checks and drafting the text. The author checked every
 statement, proof and number in the article and is responsible for its
 content.
-
-\section*{About the author}
-
-\noindent\textbf{Miguel Esteban P\'erez Ibarra} studied at the Escuela
-Superior de F\'isica y Matem\'aticas of the Instituto Polit\'ecnico
-Nacional in Mexico City, and works independently on discrete models of
-physical systems and on what their pictures do and do not show.\\[4pt]
-\textit{Mexico}\\
-\href{mailto:supersluky@gmail.com}{\texttt{supersluky@gmail.com}}
 
 \begin{thebibliography}{99}
 \bibitem{TernaryCube}
