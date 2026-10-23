@@ -1,0 +1,4 @@
+periodic: bulk tracks 85: B=32 (0.38), C=13 (0.15), F=13 (0.15), E=12 (0.14), A=7 (0.08), D=5 (0.06), ?=3 (0.04)
+          per-step: bulk defect density 0.0742, bulk clusters per 1100 cells 4.0, defect density within 30 cells of the ends 0.0020
+mirror  : bulk tracks 48: A=23 (0.48), B=7 (0.15), E=7 (0.15), C=5 (0.10), F=4 (0.08), D=2 (0.04)
+          per-step: bulk defect density 0.0547, bulk clusters per 1100 cells 4.3, defect density within 30 cells of the ends 0.3422

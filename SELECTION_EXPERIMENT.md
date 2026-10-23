@@ -123,3 +123,119 @@ rules in two dimensions, where the symmetric four-body collision at a
 corner is a second, independent filter. The experiment designed here
 (sparse launch, population counts, per-step composition, torus vs box,
 same seeds) transfers to those rules unchanged.
+
+
+---
+
+# Part B: elementary automata with a real glider zoo (2026-10-22, later)
+
+Scripts: `code/eca.py` (rules on torus / mirror box, ether detection, tracker),
+`eca_catalogue.py`, `eca_box.py`, `wall_scatter.py`, `eca54.py`, `single54.py`,
+`decay54.py`, `collisions54.py`. Figures: `figures/rule110_*.png`,
+`figures/rule54_*.png`.
+
+Ether detection: a cell is a defect if the p-word centred on it is not one of
+the background's words (p = 14 for rule 110, whose ether tile is
+`11000100110111` with temporal period 7; p = 4 for rule 54, tile `1000`,
+period 4). Species are classified by the fitted velocity of tracked defect
+clusters.
+
+## B1. Rule 110: the catalogue comes out right, but the wall is a source
+
+On a 1400-cell torus the tracker recovers the known species by speed:
+A (+2/3), B (−1/2), C (0), D (+1/5), E (−1/4), F (−1/9).
+
+Rule 110 is not left-right symmetric, so the reflection principle does not
+apply and the mirror wall is a new boundary rule, not a self-collision. What
+it does (figures `rule110_defects_fixed.png`, `rule110_rightwall_raw.png`):
+
+- The right wall is nearly ether-compatible: it hosts stationary C gliders
+  and little else.
+- The left wall is incompatible with the ether. It can be kicked, by an
+  arriving glider, into a state that grows a different periodic background
+  behind a front moving into the box at roughly 0.3–0.5 cells per step,
+  emitting A gliders as it advances. Once nucleated the invasion is total:
+  in one of two 1400-cell runs the ether fraction went from 0.90 at step
+  5000 to 0.00 at step 8000; in the other it stayed at 0.96 through step
+  8000. The event is stochastic in the seed, irreversible once started.
+- Species composition in the bulk shifts accordingly: torus B 38 %, C 15 %,
+  F 15 %, E 14 %, A 8 %; box A 48 %, B 15 %, E 15 %. The wall-scattering
+  table (tracks within 40 cells of a wall) shows why: left wall, 15
+  incoming (mostly F and E), 16 outgoing (13 of them A); right wall, 4 in,
+  4 out.
+
+So for an asymmetric rule the box does change the population, but by
+emission from a wall that acts as a phase source and glider gun, not by
+differential persistence. That is an environment, not a selector, and it
+eventually destroys the medium the gliders live in.
+
+## B2. Rule 54: the wall annihilates movers
+
+Rule 54 is left-right symmetric, its ether tile `1000` is mirror-compatible
+when the wall nodes sit on a `1` (box length 4k+1), and the reflection
+principle holds exactly. Species on the torus from sparse launches: movers
+w± at speed ±1 and stationary gutters g, plus rare slow composites.
+
+**Single launches** (`single54.py`, `decay54.py`; one 8-cell random patch at
+the centre of an ether-filled 401-cell box, or a 400-cell torus; seeds whose
+patch forms a gutter gun, about one in three, excluded). Movers alive at
+steps 60, 300, 600, 900, 1500, averaged over the eight non-gun seeds:
+
+| geometry | 60 | 300 | 600 | 900 | 1500 |
+|---|--:|--:|--:|--:|--:|
+| torus | 2.25 | 1.25 | 1.25 | 1.25 | 1.25 |
+| box   | 2.25 | 0.00 | 0.00 | 0.00 | 0.00 |
+
+On the torus the emitted pair meets head-on on the far side at a random
+relative phase; in five of seven seeds with movers both survive the
+collision and live to the end of the run. In the box every mover dies at
+its first wall contact, in every seed, and leaves nothing behind (defect
+density at the walls after the event: 0.000).
+
+**Dense runs** (`wall_scatter.py 54`, three seeds, 1401 cells, 6000 steps):
+left wall 958 incoming movers, 32 outgoing; right wall 382 incoming, 0
+outgoing. Of the roughly 1340 movers that reached a wall, 32 came back.
+
+**Torus head-on collision outcomes.** The event detector in `collisions54.py` (both tracks end at the same place) only sees annihilations by construction, since a pass-through keeps both tracks alive, so it found 2 events, both annihilations, and says nothing about the rest. The single launches are the usable statistic: of the seven torus seeds with movers, five pass through their head-on collision and two annihilate.
+
+**Mechanism.** By Theorem (reflection principle) a mover hitting the mirror
+is a head-on collision of w+ with w− at the one relative phase that is
+mirror-symmetric about the wall node. In rule 54 the outcome of a head-on
+w+/w− collision depends on the relative phase; the symmetric phase
+annihilates. On the torus the phase is random, so most collisions are
+solitonic pass-throughs and the movers persist. The wall therefore removes
+exactly one thing the torus keeps: every mover, at first contact. It does
+this without any bulk effect, since the box and the torus are identical away
+from the walls.
+
+**Caveat on dense-run compositions.** The tracked species fractions in dense
+runs (torus w− 42 % / w+ 26 %, box w− 25 % / w+ 49 %) are asymmetric in a
+symmetric rule and therefore carry a tracker bias (crossing movers exchange
+identities depending on scan order); they should not be quoted. The sparse
+launches, the wall-scattering counts and the per-step densities do not
+depend on identity continuity and are the evidence used above.
+
+## B3. Verdict for Part B
+
+In a symmetric rule with a glider zoo the hypothesis is confirmed in its
+simplest form: the mirror wall is a selector, and it selects by the
+self-collision outcome exactly as the reflection principle predicts. In
+rule 54 the selection is total against movers (annihilation at the
+symmetric phase) and neutral for gutters, so a box drains its mover
+population at the rate at which movers reach the walls and keeps only the
+stationary species, while the torus keeps both. In the vocabulary of Wong
+et al. this is differential persistence imposed by the environment, with
+"survive your own reflection" as the function; it is a one-shot filtering
+toward a fixed survivor set, not open-ended ratcheting, because nothing is
+copied or varied.
+
+In the asymmetric rule 110 the walls are sources rather than filters, and
+the question of selection is moot because the medium itself is eventually
+replaced.
+
+The next step, if the line is pursued: a rule with several mover species
+whose symmetric-phase self-collisions differ (some annihilate, some
+reflect), which would make the box select among movers rather than against
+all of them. Rule 110 has the zoo but not the symmetry; rule 54 has the
+symmetry but a single mover species. Two-dimensional Lenia-type rules have
+both and add the corner as a second filter.

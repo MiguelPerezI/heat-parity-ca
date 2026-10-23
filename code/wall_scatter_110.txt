@@ -1,0 +1,4 @@
+rule 110 wall L: incoming   15 {'B': 2, 'E': 3, 'F': 10}
+rule 110 wall L: outgoing   16 {'?': 2, 'A': 13, 'C': 1}
+rule 110 wall R: incoming    4 {'A': 1, 'C': 1, 'D': 2}
+rule 110 wall R: outgoing    4 {'C': 1, 'F': 3}
