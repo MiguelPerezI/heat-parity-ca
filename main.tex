@@ -1,0 +1,610 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[margin=1.1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+\graphicspath{{figures/}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\frc}{\operatorname{frac}}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\codim}{codim}
+
+\title{Apparent Complexity of Quantized Diffusion,\\
+  and Class-4 Structures Against the Boundary Strata of a Box}
+\author{Miguel E.~P\'erez Ibarra\thanks{Affiliation and e-mail. (Placeholder.)}
+  \and Jaziel Flores Rodr\'iguez\thanks{Affiliation and e-mail. (Placeholder.)}}
+\date{\today\\[4pt]\small Code and figures: \url{https://github.com/MiguelPerezI/heat-parity-ca}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Part~I. Colouring the cells of a finite-difference heat simulation by the
+parity of $\lfloor q\,u\rfloor$ produces black-and-white frames whose
+apparent complexity rises from nothing, peaks in a lattice of symmetric
+concentric islands, and dies. We show that these frames are the contour
+map of the temperature at spacing $1/q$ with alternating fill, that the
+rise is aliasing, and that the islands are the replicated centres of an
+undersampled Fresnel zone plate. Three elementary results make this
+exact: the band count and the total variation are nonincreasing under
+Neumann heat flow on a box; the phase-averaged perimeter of the sampled
+pattern equals a sum over grid edges of a triangle wave of the edge
+jump, $\sum_e \dist(q|\Delta_e u|,2\Z)$, and the discrete total
+variation is nonincreasing, so every increase of the perimeter is
+produced by edges whose jump exceeds one quantum; and the block entropy
+of the pattern has two non-commuting limits, $0$ as the grid is refined
+and maximal as the quantum is refined. Part~II. We then move the
+modulus from the display into the dynamics, which yields Wolfram's
+continuous cellular automata, and ask how their class-4 localized
+structures interact with the $3^n$ boundary strata of a box when the
+walls are reflecting, implemented by the ternary-cube rule.
+\end{abstract}
+
+\part{Quantized diffusion: what the pictures are}
+
+\section{The observation}\label{sec:obs}
+
+The two-dimensional heat equation $u_t=\kappa\Delta u$ was integrated on
+a $64\times64$ grid with an explicit scheme, starting from a hot square
+($u=100$ on a $24\times24$ block, $0$ elsewhere), and displayed as a
+height field in which each facet is coloured white or black according to
+the parity of $\lfloor 10\,u\rfloor$. The frames (Figure~\ref{fig:frames})
+begin uniformly black, erupt into a fine noise-like texture around the
+square, organize into a square-symmetric lattice of concentric islands,
+and finally fade to a few rings and then to a single colour. The
+sequence looks like a cellular automaton with a rich transient, and the
+islands look like eddies. Neither is the case, and the point of Part~I
+is to say precisely what they are.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.3\textwidth]{parity_k150.png}\hfill
+\includegraphics[width=0.3\textwidth]{parity_k1000.png}\hfill
+\includegraphics[width=0.3\textwidth]{parity_k2000.png}
+\caption{Parity of $\lfloor 10u\rfloor$ on the $64\times64$ grid at
+steps $150$, $1000$ and $2000$ of the explicit scheme with
+$\Delta t=2\cdot10^{-4}$, $\kappa=0.2$, reflecting walls. The field has a
+single maximum throughout.}
+\label{fig:frames}
+\end{figure}
+
+Throughout, $\Omega=(0,L)^n$, $u$ solves $u_t=\kappa\Delta u$ with
+homogeneous Neumann data, $q>0$ is the quantization frequency (quantum
+$1/q$), $\theta\in[0,1)$ is a phase, and the \emph{pattern} is
+\begin{equation}\label{eq:pattern}
+  b_\theta(x,t)=\lfloor q\,u(x,t)+\theta\rfloor \bmod 2 .
+\end{equation}
+The grid version samples $u$ at the $N^n$ nodes of the explicit scheme
+with reflected ghost values (the ternary-cube rule with zero flux), under
+$\sum_m r_m\le\frac12$. We write $E$ for the set of grid edges and
+$\Delta_eu$ for the jump of $u$ across the edge $e$.
+
+So \eqref{eq:pattern} is the contour map of $u$ with isotherms at the
+levels $(k-\theta)/q$ and alternating fill. The pattern is an
+\emph{observable} of $u$, not a state: two fields with the same pattern
+evolve to different patterns, so no local rule on black and white cells
+reproduces the frames, and by the usual definition (a map on
+configurations over a finite alphabet given by a local rule) this is not
+a cellular automaton.
+
+\section{What is monotone in the continuum}\label{sec:cont}
+
+\begin{theorem}\label{thm:cont}
+Let $u$ solve the Neumann heat equation on the box $\Omega$.
+\begin{enumerate}
+\item The band count $B_q(t)=\#\{k:(k-\theta)/q\in[\min u(\cdot,t),\max u(\cdot,t)]\}$ is nonincreasing for every $\theta$.
+\item The total variation $\TV(t)=\int_\Omega|\nabla u(x,t)|\,dx$ is nonincreasing.
+\item The phase-averaged total isotherm length equals the total variation exactly:
+\begin{equation}\label{eq:coarea}
+  \int_0^1\sum_{k\in\Z}\mathcal H^{n-1}\bigl(\{u(\cdot,t)=(k-\theta)/q\}\bigr)\,d\theta
+  \;=\; q\,\TV(t),
+\end{equation}
+and is therefore nonincreasing.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) is the maximum principle: $\max u$ is nonincreasing and $\min u$
+nondecreasing. (2) Reflect $u$ evenly across every face of the box; the
+result $\tilde u$ is a $2L$-periodic solution of the heat equation on the
+torus $\mathbb T=(\R/2L\Z)^n$, smooth for $t>0$. Each component
+$\partial_m\tilde u$ is again a periodic heat solution, so
+$\nabla\tilde u(t)=K_{t-s}*\nabla\tilde u(s)$ for $t>s$, where $K$ is the
+periodic heat kernel, $K\ge0$, $\int K=1$. Convexity of the Euclidean
+norm gives $|\nabla\tilde u(t)|\le K_{t-s}*|\nabla\tilde u(s)|$
+pointwise; integrating over $\mathbb T$ and dividing by $2^n$ gives
+$\TV(t)\le\TV(s)$. (3) By the coarea formula,
+$\int_\Omega|\nabla u|=\int_\R\mathcal H^{n-1}(\{u=s\})\,ds$; the left
+side of \eqref{eq:coarea} is $\int_\R\mathcal H^{n-1}(\{u=s\})\,q\,ds$
+after the substitution $s=(k-\theta)/q$, $\theta\in[0,1)$, $k\in\Z$.
+\end{proof}
+
+For a fixed phase the sum in \eqref{eq:coarea} is a Riemann sum of the
+coarea integral, hence within $o(1)$ (as $q\to\infty$) of a
+nonincreasing function. In the continuum the quantized contour map has
+no rise of complexity, for any quantum, in the phase-averaged sense.
+
+\section{The exact perimeter formula on the grid}\label{sec:grid}
+
+Let $P_h$ be the number of grid edges whose two cells differ in colour,
+and $C_h=\sum_{e\in E}|\lfloor qu_a+\theta\rfloor-\lfloor qu_b+\theta\rfloor|$
+the number of isotherm crossings, where $a,b$ are the ends of $e$. Let
+$\TV_h=\sum_{e\in E}|\Delta_eu|$ and let $\varphi(x)=\dist(x,2\Z)$ be the
+triangle wave of period $2$ with $\varphi(x)=x$ on $[0,1]$.
+
+\begin{theorem}\label{thm:grid}
+\begin{enumerate}
+\item (Discrete TVD.) For each axis $m$, $\sum_{\mathbf i}|u_{\mathbf i+\mathbf e_m}-u_{\mathbf i}|$ is nonincreasing under the explicit scheme with reflected ghosts and $\sum_mr_m\le\frac12$. Hence $\TV_h$ is nonincreasing.
+\item (Random phase.) With $\theta$ uniform on $[0,1)$,
+\begin{equation}\label{eq:phase}
+  \E_\theta C_h=q\,\TV_h,\qquad
+  \E_\theta P_h=\sum_{e\in E}\varphi\bigl(q|\Delta_eu|\bigr),
+\end{equation}
+both exactly.
+\item Consequently: if $q|\Delta_eu|\le1$ on every edge then $\E_\theta P_h=q\TV_h$ and is nonincreasing; always $\E_\theta P_h\le\min(q\TV_h,|E|)$; every increase of $\E_\theta P_h$ in time is produced by edges whose jump exceeds one quantum and is decreasing through a folded branch of $\varphi$; and $\E_\theta P_h$ is nonincreasing from the first time $t^\ast$ at which $\max_e q|\Delta_eu|\le1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) On the reflected periodic grid the scheme is a convex combination of
+translates, $u^{l+1}=\sum_jc_j\,\sigma_ju^l$ with $c_j\ge0$,
+$\sum c_j=1$, by the CFL condition. The axis difference
+$D_mu=\sigma_{\mathbf e_m}u-u$ satisfies the same recursion, and a
+convex combination of translates is an $\ell^1$-contraction, so
+$\|D_mu^{l+1}\|_1\le\|D_mu^l\|_1$. Restricting the periodic sum to the
+box changes it by the factor $2^n$. (2) Under a uniform shift the number
+of levels $(k-\theta)/q$ inside an interval of length $\ell$ is
+$\lfloor q\ell\rfloor$ with probability $1-\{q\ell\}$ and
+$\lfloor q\ell\rfloor+1$ with probability $\{q\ell\}$. Its expectation is
+$q\ell$, which gives the first identity. The two ends of the edge differ
+in colour iff that number is odd; if $\lfloor q\ell\rfloor$ is even this
+has probability $\{q\ell\}$, otherwise $1-\{q\ell\}$, and both equal
+$\varphi(q\ell)$. (3) follows from $\varphi(x)=x$ on $[0,1]$,
+$\varphi\le\min(x,1)$, and the fact that $\varphi$ is increasing only on
+the branches $[2j-1,2j]$, $j\ge1$, which require $x>1$.
+\end{proof}
+
+Theorem~\ref{thm:grid} explains the frames. Initially the jumps across
+the edge of the hot square are a thousand quanta, $\varphi$ is folded a
+thousand times, and the expected perimeter per such edge is about
+$\frac12$. As the front spreads the number of edges in the folded regime
+grows, so the perimeter grows, although $q\TV_h$ is falling all along.
+When the largest jump passes below one quantum, the perimeter becomes
+$q\TV_h$ itself and decays with it. Table~\ref{tab:phase} shows the
+identity \eqref{eq:phase} against a Monte-Carlo average over $200$
+phases on the setup of Figure~\ref{fig:frames}, and the peak at the step
+where the largest jump crosses one quantum.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+step & $q\TV_h$ & $P_h(\theta=0)$ & $\overline{P_h}$ (MC) & $\sum_e\varphi(q|\Delta_eu|)$ & $\max_eq|\Delta_eu|$ \\
+\midrule
+   20 & 95999.7 & 1136 & 1256.2 & 1257.3 & 155.95 \\
+  150 & 87103.5 & 3600 & 3613.3 & 3610.7 &  51.75 \\
+  400 & 59437.5 & 4032 & 4004.1 & 4004.7 &  22.19 \\
+ 1000 & 22542.9 & 4232 & 4285.2 & 4286.4 &   5.75 \\
+ 1500 & 10006.7 & 3560 & 3552.3 & 3555.3 &   2.22 \\
+ 2000 &  4435.4 & 4432 & 4436.8 & 4435.4 &   0.92 \\
+ 2500 &  1964.6 & 1976 & 1963.5 & 1964.6 &   0.39 \\
+ 3000 &   870.0 &  896 &  867.3 &  870.0 &   0.17 \\
+ 4000 &   170.5 &  184 &  172.9 &  170.5 &   0.03 \\
+\bottomrule
+\end{tabular}
+\caption{The random-phase identity \eqref{eq:phase} on the $64\times64$
+run of Figure~\ref{fig:frames}, $q=10$. The discrete total variation never
+increased; the perimeter peaks where the largest jump crosses one quantum;
+from then on $\overline{P_h}=q\TV_h$ to rounding.}
+\label{tab:phase}
+\end{table}
+
+\section{Entropy: the limits do not commute}\label{sec:entropy}
+
+Let $H_{q,h}(t)$ be the Shannon entropy of the empirical distribution of
+$2\times2$ blocks of $b_\theta$ on the grid of spacing $h$.
+
+\begin{theorem}\label{thm:entropy}
+Fix $t>0$.
+\begin{enumerate}
+\item For fixed $q$, $\lim_{h\to0}H_{q,h}(t)=0$.
+\item For fixed $h$, if $1,u(x_1,t),\dots,u(x_M,t)$ are linearly independent over $\Q$, where $x_j$ are the grid nodes, then $(q\,u(x_j,t)\bmod2)_{j}$ is equidistributed on $(\R/2\Z)^M$ as $q\to\infty$, and the Ces\`aro limit over $q$ of $H_{q,h}(t)$ is the maximum $\log_216=4$ bits.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) For $t>0$ the isotherms are smooth curves of finite total length
+$\Lambda_q(t)$; a $2\times2$ block is non-uniform only if an isotherm
+passes within distance $2h$ of it, so the fraction of non-uniform blocks
+is $O(h\Lambda_q(t))$, and the entropy of a distribution concentrated on
+one symbol with mass $1-O(h)$ is $O(h\log(1/h))$. (2) is Weyl's
+equidistribution theorem (Kronecker--Weyl) for the sequence
+$q\mapsto(qu(x_j,t))_j$ on the torus, under the stated rational
+independence; the uniform distribution on $\{0,1\}^4$ maximizes the
+block entropy.
+\end{proof}
+
+The square-symmetric initial data of the experiment violate the
+independence in (2), since $u(x_j)=u(\sigma x_j)$ for the symmetries
+$\sigma$ of the square, and the achievable entropy is reduced by the
+orbit structure. That is why the aliased frames look like symmetric
+designs rather than noise. Measured on the frames of
+Figure~\ref{fig:frames}, the block entropy reaches $3.99$ bits at
+step~$400$; this is regime~(2), a statement about the sampling, not
+about the heat equation.
+
+\section{The islands are moir\'e}\label{sec:moire}
+
+Where $u$ is locally linear, $\lfloor q(a\cdot x)+\theta\rfloor\bmod2$ on
+the lattice is a two-colour digital plane, whose one-dimensional sections
+are Sturmian words; these are the striped regions. Where $u$ is locally
+quadratic, near the maximum and in the tails, the pattern is a sampled
+Fresnel zone plate. An undersampled zone plate replicates its centre:
+neighbouring cells agree in colour wherever $q\,h\,\partial_mu$ is near an
+even integer, so fake centres appear along the curves
+$\{qh\,\partial_mu\in2\Z\}$, $m=1,2$. Figure~\ref{fig:res} shows the same
+physical state at $64$ and $256$ cells with the same quantum: the island
+lattice is present at $64$ and absent at $256$, where the frame is an
+ordinary contour map. Table~\ref{tab:res} gives the measures. With the
+quantum scaled as $1/N$ instead, the measures are constant in $N$
+(perimeter per cell $0.879$, $0.894$, $0.893$): the texture depends on
+the single ratio $qh|\nabla u|$ and is scale-free undersampling.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.3\textwidth]{parity_k2000.png}\hfill
+\includegraphics[width=0.3\textwidth]{parity_late_N256.png}
+\caption{Left: $64\times64$ grid at $t=0.4$ ($q=10$). Right: the same
+state on a $256\times256$ grid with the same quantum. The islands of the
+left frame are replicated zone-plate centres; the right frame is the
+contour map of the field, with its mirror images in the four corners
+produced by the reflecting walls.}
+\label{fig:res}
+\end{figure}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$N$ & bands & perimeter$/N^2$ & $H_{2\times2}$ (bits) & components \\
+\midrule
+ 64 & 34 & 1.082 & 3.93 & 905 \\
+128 & 36 & 0.564 & 3.45 &  88 \\
+256 & 37 & 0.287 & 2.61 &  92 \\
+\bottomrule
+\end{tabular}
+\caption{Resolution test at $t=0.4$, $q=10$ fixed. Perimeter per cell
+halves with each doubling, as a fixed set of smooth curves does; the
+islands collapse into the real rings.}
+\label{tab:res}
+\end{table}
+
+\section{What is not claimed, and what the lesson is}\label{sec:lesson}
+
+The number of components of the pattern, and the number of local maxima
+of $u$, are not monotone in general in two dimensions
+\cite{Magnanini}; nor is the entropy of the value histogram of $u$. There
+are no eddies: for $t>0$ the field is analytic with smooth nested
+isotherms. The lesson of Part~I is methodological. Perimeter, block
+entropy and component counts of a thresholded simulation measure the
+sampling as much as the dynamics; the phase-averaging identity
+\eqref{eq:phase} is a diagnostic, since a phase-averaged perimeter
+exceeding $q\TV_h$ is aliasing by Theorem~\ref{thm:grid}(3). Real
+complexity requires the nonlinearity inside the dynamics, which is the
+subject of Part~II.
+
+\part{Class-4 structures against the boundary strata}
+
+\section{Moving the modulus into the dynamics}\label{sec:cca}
+
+Wolfram's continuous cellular automata \cite[ch.~4, 6]{NKS} replace the
+display rule of Part~I by a state rule:
+\begin{equation}\label{eq:cca}
+  u^{l+1}_{\mathbf i}=\frc\Bigl(u^l_{\mathbf i}+\sum_{m=1}^nr_m\,\tilde\delta^2_{m,\tau_m(\mathbf i)}u^l_{\mathbf i}+a\Bigr),
+\end{equation}
+with $r_m=1/(2n+1)$ this is ``the mean of the $(2n+1)$-point
+neighbourhood plus $a$, modulo $1$''. The operator
+$\tilde\delta^2_{m,\tau_m}$ is the per-axis second difference of the
+ternary-cube rule \cite{TernaryCube}: on a free digit it is the ordinary
+central difference, on a wall digit it uses the reflected ghost value, so
+the box has reflecting walls and the $3^n$ strata of the grid are exactly
+the places where the rule differs. In one dimension Wolfram reports class-4
+behaviour, with discrete localized structures on a periodic background,
+for $a=0.398$, $a=0.4$, and for $a=0.5$ with the neighbours weighted by
+$1.13$ before averaging \cite[p.~244]{NKS}.
+
+\section{Questions}\label{sec:questions}
+
+A localized structure that reaches a wall of codimension one meets a
+cell whose neighbourhood is its own mirror image. In two dimensions it
+can also meet an edge where two mirrors cross, and in three dimensions a
+corner where three cross. We ask:
+\begin{enumerate}
+\item Do structures reflect, annihilate, or stick at a wall? Does the wall itself nucleate structures?
+\item Is the time-averaged activity near a wall higher, lower or equal to the bulk value, and how does it depend on the codimension of the stratum (wall, edge, corner)?
+\item Are there boundary-bound structures that exist only on a stratum, and does their class differ from the bulk class?
+\end{enumerate}
+
+\section{The reflection principle}\label{sec:reflection}
+
+The first result is exact and settles the structure of the problem.
+Write $\mathcal R_m$ for the even reflection of a configuration across
+the wall nodes of axis $m$, which turns the box grid
+$\{0,\dots,N_m-1\}$ into the periodic grid of length $2(N_m-1)$, and
+$\mathcal R=\mathcal R_1\cdots\mathcal R_n$ for the reflection into the
+torus $\mathbb T_h=\prod_m\Z/2(N_m-1)\Z$.
+
+\begin{theorem}[reflection principle]\label{thm:reflection}
+Let $F_{\rm box}$ be the rule \eqref{eq:cca} on the box with
+ternary-cube mirror ghosts, and $F_{\rm per}$ the same rule on
+$\mathbb T_h$ with periodic wrap. Then
+\[
+  \mathcal R\circ F_{\rm box}=F_{\rm per}\circ\mathcal R ,
+\]
+and $\mathcal R$ maps the box configurations bijectively onto the
+reflection-symmetric configurations of $\mathbb T_h$, which form an
+invariant set of $F_{\rm per}$. The same holds for any rule whose
+per-axis stencil is symmetric under $i\mapsto-i$, in particular for the
+weighted means of \cite[p.~244]{NKS}, and for any pointwise
+post-processing such as $\frc$ or rounding.
+\end{theorem}
+
+\begin{proof}
+At a node with free digit $\tau_m=1$ the two rules read the same
+neighbours. At a wall node the mirror ghost $u_{-1}:=u_{1}$ is exactly
+the value that the reflected configuration carries at the position
+$-1$, so the stencil sums agree; symmetry of the stencil makes the
+reflected configuration's update at $-i$ equal to its update at $i$, so
+symmetry is preserved. Pointwise maps commute with everything.
+\end{proof}
+
+Numerically the identity holds to the last digit: on $400$ cells for
+$3000$ steps in one dimension and on $64^2$ cells for $1000$ steps in two
+dimensions, the maximum difference between the box run and the doubled
+periodic run was $0$ (script \texttt{reflection\_principle.py}).
+
+The consequences organize Part~II. A structure that hits a wall of
+codimension one collides head-on with its own mirror image; what the
+wall does to it is the outcome of a symmetric two-body collision. A
+structure that reaches an edge of a three-dimensional box, or a corner of
+a two-dimensional one, meets the images under two commuting reflections,
+a symmetric four-body collision; a corner of a three-dimensional box is
+an eight-body collision. The stratum of codimension $c$ is the fixed set
+of $c$ commuting reflections, and the activity there is constrained
+accordingly: the wall node is its own image, so the difference across
+the wall is identically zero, and the boundary stratum is
+\emph{quieter} than the bulk by construction, not by dynamics. Finally,
+nothing can live on a wall that does not also exist in the periodic
+system as a symmetric configuration, so boundary-bound structures are
+exactly the mirror-symmetric localized structures of the bulk rule
+pinned at the symmetry axis.
+
+\section{One dimension}\label{sec:1d}
+
+We take $a=0.398$, $r=\frac13$ (the three-cell mean), random initial
+data, values rounded to nine decimals after each step to emulate exact
+arithmetic, and the activity indicator
+$\chi_{\mathbf i}=[\dist(u_{\mathbf i}-u_{\mathbf i+1},\Z)>0.05]$, which
+is Wolfram's difference display thresholded. Figure~\ref{fig:class4_1d}
+shows the space-time diagrams with periodic and with reflecting walls, and a magnified view of the wall.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=0.5\textheight]{class4_1d_a0.398_periodic.png}\hfill
+\includegraphics[height=0.5\textheight]{class4_1d_a0.398_mirror.png}\hfill
+\includegraphics[height=0.5\textheight]{class4_1d_wallzoom.png}
+\caption{Class 4 in one dimension: $a=0.398$, three-cell mean plus $a$
+modulo $1$, $300$ cells, $600$ steps downward from random data, same
+seed, difference display (black where neighbours differ). Left:
+periodic. Middle: mirror walls at both sides. Right: the $60$ cells
+nearest the left wall during steps $300$--$600$, magnified. Localized
+structures move at fixed speeds through a periodic background, cross or
+scatter, and at the wall return as their mirror images, forming the V
+shapes predicted by the reflection principle.}
+\label{fig:class4_1d}
+\end{figure}
+
+The bulk activity fraction, averaged over four seeds and
+$2500$ steps after a $500$-step transient, is $0.27$ with periodic
+boundaries and $0.28$ with walls: intermediate between the extinct and
+the saturated value, as class~4 requires. The profile against distance
+to the wall is flat in the bulk and drops only in the wall layer: the
+wall node has activity $0.09$ and its neighbour $0.23$, after which the
+bulk value is reached. The ten cells nearest the walls carry $0.90$ of
+the bulk activity. This is the quiet layer predicted by
+Theorem~\ref{thm:reflection}: the wall node cannot differ from its own
+image, and its neighbour sits in a symmetric three-cell neighbourhood.
+No structure was seen to stick at the wall, and the wall did not
+nucleate structures beyond those arriving from the bulk, consistent with
+the collision picture: a head-on symmetric collision in this rule
+returns the pair.
+
+\section{Two and three dimensions}\label{sec:2d}
+
+\paragraph{Scan.} In two dimensions the rule is the five-point mean plus
+$a$ modulo $1$. A scan of $a$ in steps of $0.01$ on a $128^2$ torus from
+random data (script \texttt{scan2d.py}) gives a late activity fraction
+that varies \emph{continuously} with $a$, from $0.29$ near $a=0.01$ to
+$0.92$ on the plateaus $a\in[0.34,0.43]$ and $[0.57,0.66]$, with dips to
+$0.43$--$0.45$ near $a=\frac13,\frac12,\frac23$. There are no sharp
+class-4 windows of the one-dimensional kind, and the one-dimensional
+class-4 value $a=0.398$ is fully chaotic in two dimensions (activity
+$0.92$, persistence of active cells equal to their density). Space-time
+cuts (Figure~\ref{fig:cuts}) show three regimes: near $a=\frac13$ and
+$\frac23$ the background is a period-three cycle and the dynamics
+consists of slowly wandering \emph{domain walls} between its three
+phases; near $a=\frac12$ one sees intermittent short-lived spots on a
+period-two background; on the plateaus, spatiotemporal chaos. In this
+family the two-dimensional analogue of the one-dimensional gliders is
+therefore a codimension-one defect, the phase wall, and the natural
+question becomes how phase walls and intermittent spots meet the box.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{cuts2d_spacetime.png}
+\caption{Space-time cuts (middle row of a $128^2$ torus against the last
+$256$ of $1200$ steps, difference display) for
+$a=0.33,\,0.49,\,0.51,\,0.67,\,0.02,\,0.398$. Wandering phase walls at
+$0.33$ and $0.67$, intermittent spots at $0.49$ and $0.51$, a regular
+lattice at $0.02$, chaos at $0.398$.}
+\label{fig:cuts}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{filmstrip2d_a0.33.png}\\[4pt]
+\includegraphics[width=\textwidth]{filmstrip2d_a0.49.png}
+\caption{The $128^2$ box with mirror walls, difference display, at
+steps $0,50,100,200$ (top row of each strip) and $400,600,800,1200$
+(bottom row). Upper strip, $a=0.33$: random data collapse within fifty
+steps into a period-three background crossed by phase walls, which then
+wander, join and pinch off; walls parallel to a side are cleared from a
+margin a few cells wide, walls perpendicular to it end on it. Lower
+strip, $a=0.49$: intermittent spots on a period-two background, born and
+dying everywhere except at the corners.}
+\label{fig:box033}
+\end{figure}
+
+\paragraph{Activity per stratum.} We run the box with mirror walls,
+classify every node by the codimension of its stratum in the ternary
+cube ($0$ interior, $1$ wall, $2$ edge or two-dimensional corner, $3$
+three-dimensional corner), and record the time-averaged activity
+indicator, now defined as the maximum over all existing neighbour
+differences of $\dist(u_{\mathbf i}-u_{\mathbf j},\Z)>0.05$. Grids are
+$128^2$ for $1500$ steps and $32^3$ for $800$ steps, averaged after a
+transient of one third of the run (script \texttt{strata.py}).
+Table~\ref{tab:strata} gives the results.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+regime & grid & codim $0$ & codim $1$ & codim $2$ & codim $3$ \\
+\midrule
+chaos, $a=0.398$ & $128^2$ & 0.989 & 0.948 & 0.739 & \\
+chaos, $a=0.398$ & $32^3$  & 0.997 & 0.993 & 0.981 & 0.927 \\
+intermittent, $a=0.49$ & $128^2$ & 0.561 & 0.503 & 0.190 & \\
+intermittent, $a=0.49$ & $32^3$  & 0.475 & 0.494 & 0.500 & 0.334 \\
+phase walls, $a=0.33$ & $128^2$ & 0.491 & 0.349 & 0.207 & \\
+chaos (3-D rule), $a=0.33$ & $32^3$ & 0.999 & 0.998 & 0.988 & 0.898 \\
+\bottomrule
+\end{tabular}
+\caption{Time-averaged activity fraction per boundary stratum of the box
+with mirror walls. One seed per row; the three-dimensional values
+fluctuate by about $\pm0.03$ between distances in the bulk.}
+\label{tab:strata}
+\end{table}
+
+Four observations. First, in the chaotic regime the activity decreases
+monotonically with the codimension of the stratum, in both dimensions,
+and the depth of the boundary layer is one cell: at distance one from
+the nearest wall the two-dimensional activity is already $0.981$ against
+$0.989$ in the bulk. This is the kinematic effect of
+Theorem~\ref{thm:reflection}: a node on a stratum of codimension $c$ has
+$c$ of its neighbour pairs identified by symmetry, so it has fewer
+independent neighbours to differ from, and the effect compounds with
+$c$. Second, in the intermittent regime the corner is strongly
+suppressed in both dimensions ($0.19$ against $0.56$ in two dimensions,
+$0.33$ against $0.48$ in three), while the three-dimensional faces and
+edges are at the bulk value within the noise. So in two dimensions the
+spots avoid the corners but not the walls, and in three dimensions only
+the eight corner nodes are special; the twelve edges, which are the
+analogue of the two-dimensional corners, are not. Third, the phase-wall
+regime is the one in which the box is felt at a distance: the activity
+profile against the distance to the nearest wall is
+$0.35,\,0.40,\,0.44,\,0.47,\,0.48,\,0.49$ for distances $0$ to $5$,
+a boundary layer about five cells deep, against one cell in the other
+regimes. The reflection principle says why: a phase wall approaching a
+mirror meets a phase wall of opposite orientation, its own image, and
+the pair annihilates when the strip between them collapses, so a region
+near the mirror is cleared of walls parallel to it; walls perpendicular
+to the mirror end on it, and are the activity that remains at distance
+zero. Fourth, the same $a=0.33$ is chaotic under the seven-point rule in
+three dimensions, with the one-cell layer of the chaotic regime, which
+shows that the regime, not the constant, is what the strata respond to.
+
+\paragraph{What this does and does not show.} Within the mean-plus-constant
+family, the strata of the ternary cube are visible as the reflection
+principle predicts: a quiet layer whose strength grows with the
+codimension, strongest at the corners, one cell deep where the bulk is
+chaotic or intermittent and several cells deep where the bulk is
+organized into phase domains, because there the mirror annihilates its
+own image's walls. We did not find
+two-dimensional class-4 structures of the glider type in this family, so
+the question of how a glider reflects off an edge or a corner remains to
+be asked of a rule that has gliders, for instance Lenia \cite{Lenia},
+where the large convolution kernel makes the boundary strata
+$(2s+1)^n$ layers thick in the sense of the ternary-cube note
+\cite{TernaryCube}. The reflection principle applies there verbatim.
+
+\section*{Code}
+All scripts, the figures and the source of this article are public at
+\url{https://github.com/MiguelPerezI/heat-parity-ca}. The scripts are in \texttt{code/}: \texttt{analyze.py},
+\texttt{restest.py} and \texttt{phase\_theorem.py} for Part~I;
+\texttt{contca.py}, \texttt{scan1d.py}, \texttt{nks\_repro.py},
+\texttt{wall1d.py}, \texttt{reflection\_principle.py}, \texttt{scan2d.py},
+\texttt{cuts2d.py} and \texttt{strata.py} for Part~II;
+\texttt{view1d.py} and \texttt{filmstrip2d.py} produce the figures of
+Sections~\ref{sec:1d} and~\ref{sec:2d}, and \texttt{view2d.py} is a live
+viewer of the box (\texttt{python3.12 view2d.py 0.33 160 mirror}).
+
+\begin{thebibliography}{99}
+\bibitem{TernaryCube}
+M.~E.~P\'erez Ibarra, J.~Flores Rodr\'iguez,
+\emph{One case, not twenty-seven: the ternary cube as the index set for
+boundary stencils of finite-difference schemes in any dimension},
+preprint (2026).
+\bibitem{NKS}
+S.~Wolfram, \emph{A New Kind of Science}, Wolfram Media, 2002.
+\bibitem{Magnanini}
+R.~Magnanini, \emph{An introduction to the study of critical points of
+solutions of elliptic and parabolic equations}, arXiv:1604.00530.
+\bibitem{Amidror}
+I.~Amidror, \emph{The Theory of the Moir\'e Phenomenon}, 2nd ed.,
+Springer, 2009.
+\bibitem{Evans}
+L.~C.~Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010.
+\bibitem{Harten}
+A.~Harten, \emph{High resolution schemes for hyperbolic conservation
+laws}, J.\ Comput.\ Phys.\ 49 (1983) 357--393.
+\bibitem{MOW}
+O.~Martin, A.~Odlyzko, S.~Wolfram, \emph{Algebraic properties of cellular
+automata}, Comm.\ Math.\ Phys.\ 93 (1984) 219--258.
+\bibitem{ChateManneville}
+H.~Chat\'e, P.~Manneville, \emph{Transition to turbulence via
+spatio-temporal intermittency}, Phys.\ Rev.\ Lett.\ 58 (1987) 112--115.
+\bibitem{Kaneko}
+K.~Kaneko, \emph{Overview of coupled map lattices}, Chaos 2 (1992) 279--282.
+\bibitem{FHP}
+U.~Frisch, B.~Hasslacher, Y.~Pomeau, \emph{Lattice-gas automata for the
+Navier--Stokes equation}, Phys.\ Rev.\ Lett.\ 56 (1986) 1505--1508.
+\bibitem{Hologram}
+Analysis on image recovery for digital Fresnel hologram with aliased
+fringe generated from self-similarity of point spread function,
+arXiv:1911.07997.
+\bibitem{Lenia}
+B.~W.-C.~Chan, \emph{Lenia and expanded universe}, arXiv:2005.03742.
+\end{thebibliography}
+
+\end{document}

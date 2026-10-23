@@ -1,0 +1,2 @@
+n=2 N=128 T=1500 a=0.33: codim0=0.491(n=15876) codim1=0.349(n=504) codim2=0.207(n=4) | activity vs distance to nearest wall 0..5: 0.348 0.398 0.444 0.469 0.479 0.485
+n=3 N=32 T=800 a=0.33: codim0=0.999(n=27000) codim1=0.998(n=5400) codim2=0.988(n=360) codim3=0.898(n=8) | activity vs distance to nearest wall 0..5: 0.997 0.999 0.999 0.999 0.999 0.999

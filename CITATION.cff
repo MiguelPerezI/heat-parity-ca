@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this code or article, please cite it as below."
+title: "Apparent complexity of quantized diffusion, and class-4 structures against the boundary strata of a box"
+authors:
+  - family-names: "Pérez Ibarra"
+    given-names: "Miguel E."
+  - family-names: "Flores Rodríguez"
+    given-names: "Jaziel"
+year: 2026
+repository-code: "https://github.com/MiguelPerezI/heat-parity-ca"
+license: MIT

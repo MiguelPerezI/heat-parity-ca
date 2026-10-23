@@ -1,0 +1,54 @@
+
+== main21D.py dynamics (in-place sweep, frozen walls), q=10, N=64 ==
+  step     max u  bands  perimeter   H2x2  components
+     0   100.000   1000          0 -0.000           1
+     1   100.000    999        484  1.300          14
+     5   100.000    999        580  1.516          55
+    20    99.960    999       1732  2.580         236
+    60    94.744    947       2880  3.594         369
+   150    70.567    705       3809  3.988         508
+   400    37.222    372       3919  3.983         603
+  1000    15.491    154       3960  3.894         621
+  2000     4.596     45       3452  3.798         677
+  3000     1.376     13       2082  3.271          14
+
+== clean Jacobi, Neumann all walls, q=10, N=64 ==
+  step     max u  bands  perimeter   H2x2  components
+     0   100.000   1000          0 -0.000           1
+     1   100.000   1000        200  0.401           6
+     5   100.000   1000        632  1.334          45
+    20    99.999    999       1136  2.212          87
+    60    98.594    985       2264  3.106         255
+   150    83.249    832       3600  3.946         534
+   400    49.708    490       4032  3.992         646
+  1000    24.730    177       4232  3.927         878
+  2000    16.297     34       4432  3.930         905
+  3000    14.854      7        896  2.331          20
+
+== resolution test, clean Jacobi, same physical time t=0.03, same quantum 0.1 ==
+N= 64  perimeter/N^2=0.879  H2x2=3.946  components/N^2=0.1304  bands=832
+N=128  perimeter/N^2=0.833  H2x2=3.863  components/N^2=0.1143  bands=833
+N=256  perimeter/N^2=0.760  H2x2=3.717  components/N^2=0.1071  bands=833
+
+== resolution test with quantum scaled as 0.1*(64/N) (aliasing ratio kept) ==
+N= 64  perimeter/N^2=0.879  H2x2=3.946  components/N^2=0.1304  bands=832
+N=128  perimeter/N^2=0.894  H2x2=3.948  components/N^2=0.1215  bands=1666
+N=256  perimeter/N^2=0.893  H2x2=3.925  components/N^2=0.1280  bands=3334
+== late-time resolution test: t = 0.4, quantum 0.1 fixed, Jacobi Neumann ==
+N= 64 steps=  2000 max=16.297 bands=34 perimeter/N^2=1.082 H2x2=3.930 components=905
+N=128 steps=  8000 max=16.146 bands=36 perimeter/N^2=0.564 H2x2=3.450 components=88
+N=256 steps= 32000 max=16.072 bands=37 perimeter/N^2=0.287 H2x2=2.609 components=92
+  step     q*TV_h  P(theta=0)  mean_theta P   formula  max q*jump
+     0    96000.0           0           0.0       0.0     1000.00
+     1    96000.0         200          61.0      64.0      672.32
+     5    96000.0         632         589.5     581.5      315.05
+    20    95999.7        1136        1256.2    1257.3      155.95
+    60    95322.6        2264        2440.8    2434.8       89.33
+   150    87103.5        3600        3613.3    3610.7       51.75
+   400    59437.5        4032        4004.1    4004.7       22.19
+  1000    22542.9        4232        4285.2    4286.4        5.75
+  1500    10006.7        3560        3552.3    3555.3        2.22
+  2000     4435.4        4432        4436.8    4435.4        0.92
+  2500     1964.6        1976        1963.5    1964.6        0.39
+  3000      870.0         896         867.3     870.0        0.17
+  4000      170.5         184         172.9     170.5        0.03
