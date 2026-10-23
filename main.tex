@@ -336,6 +336,37 @@ exceeding $q\TV_h$ is aliasing by Theorem~\ref{thm:grid}(3). Real
 complexity requires the nonlinearity inside the dynamics, which is the
 subject of Part~II.
 
+\paragraph{A remark on functional information.} Wong et al.\
+\cite{Wong2023} have proposed a law of increasing functional information:
+the functional information of a system increases when many
+configurations of the system undergo selection for one or more
+functions. Functional information, in the sense of Szostak and Hazen
+\cite{Szostak2003,Hazen2007}, is $I(E_x)=-\log_2F(E_x)$, where $F(E_x)$ is
+the fraction of all configurations that perform a given function to
+degree at least $E_x$; it is defined only relative to a function, and
+the proposed law makes selection, not mere dynamics, the source of its
+growth. Part~I is a clean example of why the restriction to a function
+is necessary. The quantized heat frames have no function and undergo no
+selection; every quantity intrinsic to the field, the band count, the
+total variation, the gradient, decreases monotonically
+(Theorems~\ref{thm:cont} and~\ref{thm:grid}); and yet the
+function-free complexity proxies that are commonly read as evidence of
+``ratcheting'' complexity, perimeter, block entropy, component count,
+rise from zero to near their maxima before they fall. The rise is
+produced entirely by the observer's choices of quantum and grid, and
+Theorem~\ref{thm:entropy} shows that these choices can make the block
+entropy anything between zero and its maximum. The random-phase
+identity \eqref{eq:phase} is the diagnostic that separates the two
+cases: a phase-averaged perimeter above $q\TV_h$ is sampling, not
+structure. The automata of Part~II are a second data point of the same
+kind: they sustain persistent localized structures, which is what the
+word complexity usually refers to, but nothing in them is selected for
+anything, and the boundary strata act as mirrors, not as selectors.
+Whether a system with persistent structures but without a selected
+function should count as evolving in the sense of \cite{Wong2023} is a
+question that framework answers in the negative by construction, and
+our examples suggest that this is the right answer.
+
 \part{Class-4 structures against the boundary strata}
 
 \section{Moving the modulus into the dynamics}\label{sec:cca}
@@ -627,6 +658,18 @@ fringe generated from self-similarity of point spread function,
 arXiv:1911.07997.
 \bibitem{Lenia}
 B.~W.-C.~Chan, \emph{Lenia and expanded universe}, arXiv:2005.03742.
+\bibitem{Wong2023}
+M.~L.~Wong, C.~E.~Cleland, D.~Arend~Jr., S.~Bartlett, H.~J.~Cleaves~II,
+H.~Demarest, A.~Prabhu, J.~I.~Lunine, R.~M.~Hazen, \emph{On the roles of
+function and selection in evolving systems}, Proc.\ Natl.\ Acad.\ Sci.\
+USA 120 (2023) e2310223120.
+\bibitem{Szostak2003}
+J.~W.~Szostak, \emph{Functional information: molecular messages}, Nature
+423 (2003) 689.
+\bibitem{Hazen2007}
+R.~M.~Hazen, P.~L.~Griffin, J.~M.~Carothers, J.~W.~Szostak,
+\emph{Functional information and the emergence of biocomplexity},
+Proc.\ Natl.\ Acad.\ Sci.\ USA 104 (2007) 8574--8581.
 \end{thebibliography}
 
 \end{document}
