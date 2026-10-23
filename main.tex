@@ -96,7 +96,7 @@ $1/q$), $\theta\in[0,1)$ is a phase, and the \emph{pattern} is
   b_\theta(x,t)=\lfloor q\,u(x,t)+\theta\rfloor \bmod 2 .
 \end{equation}
 The grid version samples $u$ at the $N^n$ nodes of the explicit scheme
-with reflected ghost values (the ternary-cube rule with zero flux), under
+with reflected ghost values (the ternary-cube rule of \cite{TernaryCube} with zero flux), under
 $\sum_m r_m\le\frac12$. We write $E$ for the set of grid edges and
 $\Delta_eu$ for the jump of $u$ across the edge $e$.
 
@@ -488,7 +488,7 @@ dying everywhere except at the corners.}
 
 \paragraph{Activity per stratum.} We run the box with mirror walls,
 classify every node by the codimension of its stratum in the ternary
-cube ($0$ interior, $1$ wall, $2$ edge or two-dimensional corner, $3$
+cube \cite{TernaryCube} ($0$ interior, $1$ wall, $2$ edge or two-dimensional corner, $3$
 three-dimensional corner), and record the time-averaged activity
 indicator, now defined as the maximum over all existing neighbour
 differences of $\dist(u_{\mathbf i}-u_{\mathbf j},\Z)>0.05$. Grids are
@@ -574,7 +574,7 @@ viewer of the box (\texttt{python3.12 view2d.py 0.33 160 mirror}).
 M.~E.~P\'erez Ibarra, J.~Flores Rodr\'iguez,
 \emph{One case, not twenty-seven: the ternary cube as the index set for
 boundary stencils of finite-difference schemes in any dimension},
-preprint (2026).
+arXiv preprint (2026). [Insert arXiv identifier.]
 \bibitem{NKS}
 S.~Wolfram, \emph{A New Kind of Science}, Wolfram Media, 2002.
 \bibitem{Magnanini}
