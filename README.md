@@ -1,7 +1,7 @@
 # Apparent complexity of quantized diffusion: contour maps, aliasing and moiré
 
 Code, figures and LaTeX source for the article of the same title by
-Miguel E. Pérez Ibarra and Jaziel Flores Rodríguez. The compiled article
+Miguel Esteban Pérez Ibarra. The compiled article
 is [`main.pdf`](main.pdf); the source is [`main.tex`](main.tex).
 
 The article explains a set of black-and-white frames produced by a
@@ -46,10 +46,32 @@ article):
 - the block entropy of the pattern has two non-commuting limits: `0` as the
   grid is refined, maximal as the quantum is refined.
 
+## A growing field: Turing spots in glycolysis
+
+The random-phase identity holds for any field, not only heat flow, so the
+deficit `q·TV_h − E P_h` measures exactly how much of a picture is
+sampling (Corollary 3.2). Section 6 applies it to the Turing spots of the
+glycolysis model of Cisneros-Ake et al. (Bull. Math. Biol. 84:100, 2022),
+displayed as `floor(10⁴·u) mod 2`. The frames pass through four stages:
+
+| noise, t = 0 | smooth, t = 200 | breakdown, t = 350 | static, t = 1000 |
+|:--:|:--:|:--:|:--:|
+| ![](figures/glyco_parity_t0000.png) | ![](figures/glyco_parity_t0200.png) | ![](figures/glyco_parity_t0350.png) | ![](figures/glyco_parity_t1000.png) |
+| ![](figures/glyco_field_t0000.png) | ![](figures/glyco_field_t0200.png) | ![](figures/glyco_field_t0350.png) | ![](figures/glyco_field_t1000.png) |
+
+The bottom row is the field itself, rescaled to its own range. Unlike the
+heat equation, which ends in one colour, the static here is permanent:
+the steady spots have jumps of 270 quanta per cell (Proposition 6.1). In
+the smooth stage the contour count grows at the leading Turing
+eigenvalue. Aliasing here hides a real growth of structure instead of
+faking one.
+
 Scripts: [`code/analyze.py`](code/analyze.py) (complexity measures against
 time, resolution tests), [`code/phase_theorem.py`](code/phase_theorem.py)
-(the random-phase identity checked against Monte-Carlo), results in
-[`code/results_partI.txt`](code/results_partI.txt).
+(the random-phase identity checked against Monte-Carlo),
+[`code/glyco.py`](code/glyco.py) (the glycolysis Turing run, about 17 min),
+results in [`code/results_partI.txt`](code/results_partI.txt) and
+[`code/results_glyco.txt`](code/results_glyco.txt).
 
 ## Running the code
 
@@ -64,6 +86,8 @@ cd code
 python3.12 analyze.py                 # tables and frames (writes ../out/)
 python3.12 phase_theorem.py           # random-phase identity, discrete TVD
 python3.12 restest.py                 # resolution tests
+python3.12 glyco.py > results_glyco.txt   # glycolysis Turing run, writes ../figures/glyco_*.png
+python3.12 png2pdf.py ../figures/glyco_*.png
 ```
 
 `ASSESSMENT.md` is the original analysis of the frames and `PROPOSAL.md` the
@@ -80,7 +104,7 @@ pdflatex main.tex && pdflatex main.tex
 - The reflecting walls of the simulation use the ternary-cube rule from the
   note *One case, not twenty-seven: the ternary cube as the index set for
   boundary stencils of finite-difference schemes in any dimension* by the same
-  authors.
+  author.
 - Putting the modulus into the dynamics instead of the display gives
   Wolfram's continuous cellular automata, which do have localized structures.
   How those structures, and the gliders of rules 54 and 110, meet reflecting
@@ -91,4 +115,4 @@ pdflatex main.tex && pdflatex main.tex
 ## License
 
 Code under the MIT License (see `LICENSE`). The article text and figures are
-© the authors.
+© the author.

@@ -3,9 +3,8 @@ message: "If you use this code or article, please cite it as below."
 title: "Apparent complexity of quantized diffusion: contour maps, aliasing and moiré"
 authors:
   - family-names: "Pérez Ibarra"
-    given-names: "Miguel E."
-  - family-names: "Flores Rodríguez"
-    given-names: "Jaziel"
+    given-names: "Miguel Esteban"
+    email: "supersluky@gmail.com"
 year: 2026
 repository-code: "https://github.com/MiguelPerezI/heat-parity-ca"
 license: MIT

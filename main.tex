@@ -32,34 +32,39 @@
 
 \title{Apparent Complexity of Quantized Diffusion:\\
   Contour Maps, Aliasing and Moir\'e}
-\author{Miguel E.~P\'erez Ibarra\thanks{Affiliation and e-mail. (Placeholder.)}
-  \and Jaziel Flores Rodr\'iguez\thanks{Affiliation and e-mail. (Placeholder.)}}
-\date{\today\\[4pt]\small Code and figures: \url{https://github.com/MiguelPerezI/heat-parity-ca}}
+\author{Miguel Esteban P\'erez Ibarra\\[2pt]
+  \small Independent researcher, Mexico\\
+  \small \href{mailto:supersluky@gmail.com}{\texttt{supersluky@gmail.com}}}
+\date{\small Code and figures: \url{https://github.com/MiguelPerezI/heat-parity-ca}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Colouring the cells of a finite-difference heat simulation by the
-parity of $\lfloor q\,u\rfloor$ produces black-and-white frames whose
-apparent complexity rises from nothing, peaks in a lattice of symmetric
-concentric islands, and dies. We show that these frames are the contour
-map of the temperature at spacing $1/q$ with alternating fill, that the
-rise is aliasing, and that the islands are the replicated centres of an
+Colour the cells of a heat-equation simulation by the parity of
+$\lfloor q\,u\rfloor$, and the frames look like a cellular automaton
+with a rich transient: noise, then a lattice of concentric islands,
+then nothing. They are a contour map of the temperature, the rise in
+complexity is aliasing, and the islands are replicated centres of an
 undersampled Fresnel zone plate. Three elementary results make this
-exact: the band count and the total variation are nonincreasing under
-Neumann heat flow on a box; the phase-averaged perimeter of the sampled
-pattern equals a sum over grid edges of a triangle wave of the edge
-jump, $\sum_e \dist(q|\Delta_e u|,2\Z)$, and the discrete total
-variation is nonincreasing, so every increase of the perimeter is
-produced by edges whose jump exceeds one quantum; and the block entropy
-of the pattern has two non-commuting limits, $0$ as the grid is refined
-and maximal as the quantum is refined. The pictures are therefore
-not a new cellular automaton but a clean example of how complexity
-measures of a thresholded field report the sampling rather than the
-dynamics; we close with a remark on why this matters for proposed laws of
-increasing functional information.
+exact. The total variation decreases. The phase-averaged perimeter of
+the pattern equals $\sum_e\dist(q|\Delta_eu|,2\Z)$, a triangle wave of
+the jump across each grid edge. And the block entropy has two limits
+that do not commute. The perimeter identity holds for any field. The gap
+between the scaled total variation $q\TV_h$ and the expected perimeter
+measures the aliasing exactly. Applied to the Turing spots of a
+glycolysis model, it shows the converse effect: aliasing hides a real
+growth of structure behind proxies that saturate, and it leaves a
+permanent static. In the faithful stage, counting contours measures the
+Turing eigenvalue. Complexity measures of a thresholded field report
+the sampling as much as the dynamics, a point with consequences for
+proposed laws of increasing functional information.
 \end{abstract}
+
+\noindent\textbf{Keywords:} aliasing; moir\'e; contour maps; heat
+equation; Turing patterns; total variation; complexity measures
+
+\noindent\textbf{MSC 2020:} 35K05, 35K57, 65M06, 68U10, 00A66
 
 \section{The observation}\label{sec:obs}
 
@@ -183,6 +188,35 @@ $\varphi(q\ell)$. (3) follows from $\varphi(x)=x$ on $[0,1]$,
 $\varphi\le\min(x,1)$, and the fact that $\varphi$ is increasing only on
 the branches $[2j-1,2j]$, $j\ge1$, which require $x>1$.
 \end{proof}
+
+Part~(2) uses nothing about the dynamics: it is an identity for any
+real field on the grid, and only part~(1) is specific to the heat
+equation. It therefore splits the perimeter of any quantized field into
+what the field does and what the sampling does.
+
+\begin{corollary}[Aliasing deficit]\label{cor:deficit}
+For any field $u$ on the grid let
+$D_h=q\TV_h-\E_\theta P_h$. Then
+\begin{equation}\label{eq:deficit}
+  D_h=\sum_{e\in E}\psi\bigl(q|\Delta_eu|\bigr),\qquad \psi(x)=x-\varphi(x),
+\end{equation}
+where $\psi$ is nondecreasing, $\psi=0$ on $[0,1]$ and
+$x-1\le\psi(x)\le x$. Hence $D_h\ge0$, with $D_h=0$ if and only if
+$\max_eq|\Delta_eu|\le1$; and $\E_\theta P_h\le|E|$ whatever the size of
+$\TV_h$, so $D_h\ge q\TV_h-|E|$.
+\end{corollary}
+
+\begin{proof}
+Subtract the two identities \eqref{eq:phase}. $\psi'=1-\varphi'\in\{0,2\}$
+almost everywhere, so $\psi$ is nondecreasing; it vanishes where
+$\varphi(x)=x$, that is on $[0,1]$; and $0\le\varphi\le1$.
+\end{proof}
+
+So $\E_\theta P_h$ is a faithful measure of $q\TV_h$ exactly as long as
+no edge carries more than one quantum. Beyond that, the
+perimeter can rise while $\TV_h$ falls, which is the heat-equation case
+of this section, or stay flat while $\TV_h$ grows without bound, which is
+the case of Section~\ref{sec:turing}.
 
 Theorem~\ref{thm:grid} explains the frames. Initially the jumps across
 the edge of the hot square are a thousand quanta, $\varphi$ is folded a
@@ -322,6 +356,179 @@ islands collapse into the real rings.}
 \label{tab:res}
 \end{table}
 
+\section{A growing field: Turing spots in glycolysis}\label{sec:turing}
+
+The heat equation is the case where every intrinsic quantity decays.
+For the opposite case, take a field whose total variation grows: the
+Turing instability \cite{Turing} of the two-variable Sel'kov model of glycolysis in
+the form of Ashkenazi and Othmer \cite{AshkenaziOthmer}, studied by
+Cisneros-Ake et al.\ \cite{Glyco},
+\begin{equation}\label{eq:selkov}
+  u_t=D_u\Delta u-u+v(a+u^2),\qquad v_t=D_v\Delta v+b-v(a+u^2),
+\end{equation}
+on $[0,1]^2$ with Neumann data. We use the parameters of their spot
+pattern (\cite[Fig.~4]{Glyco}): $a=0.1$, $b=0.85$, $D_u=0.0025$,
+$D_v=8D_u$, $101^2$ nodes ($h=0.01$), $\Delta t=10^{-3}$, initial data
+the equilibrium $(u^\ast,v^\ast)=(b,\,b/(a+b^2))$ plus $0.01$ times uniform
+noise. On this grid exactly two modes are unstable,
+$\cos3\pi x\cos2\pi y$ and $\cos2\pi x\cos3\pi y$, with growth rate
+$\lambda=0.01103$, in agreement with the leading eigenvalue
+$\lambda=0.011$ of \cite[Fig.~6]{Glyco}. We display $u$ by the parity of
+$\lfloor qu\rfloor$ with $q=10^4$. The quantum is chosen as an observer
+would choose it from the first frames, whose total range is below
+$10^{-3}$, and it reproduces the screen captures that motivated this
+section. The general statement is the following.
+
+\begin{proposition}\label{prop:growth}
+Let $u(t)$ be any family of fields on the grid.
+\begin{enumerate}
+\item (Exponential growth.) If $u(t)=\bar u+c\,e^{\lambda t}\chi$ with
+$\bar u$ constant, then $q\TV_h(t)=qc\,e^{\lambda t}\TV_h(\chi)$ and
+$\max_eq|\Delta_eu|=qc\,e^{\lambda t}\max_e|\Delta_e\chi|$. The display
+is faithful, $D_h=0$, exactly for
+$t\le t^\ast=\lambda^{-1}\log\bigl(1/(qc\max_e|\Delta_e\chi|)\bigr)$;
+after $t^\ast$, $\E_\theta P_h\le|E|$ while $D_h\ge q\TV_h-|E|$ grows
+exponentially.
+\item (End state.) If $u(t)\to u_\infty$, then
+$\E_\theta P_h(t)\to\sum_e\varphi(q|\Delta_eu_\infty|)$ and
+$D_h(t)\to D_h(u_\infty)$. The display ends faithful if and only if
+$q\max_e|\Delta_eu_\infty|\le1$. In particular it ends in one colour when
+$u_\infty$ is constant, and it is aliased for all large $t$ when
+$q\max_e|\Delta_eu_\infty|>1$.
+\item (Flicker.) For any two fields $u,u'$ on the $M$ nodes, with $\theta$
+uniform,
+\begin{equation}\label{eq:flicker}
+  \E_\theta\,\tfrac1M\#\{x:b_\theta[u](x)\ne b_\theta[u'](x)\}
+  =\tfrac1M\textstyle\sum_x\varphi\bigl(q|u(x)-u'(x)|\bigr).
+\end{equation}
+If $u(t)\to u_\infty$ then, for every $\theta$ with
+$qu_\infty(x)+\theta\notin\Z$ at all nodes, the picture $b_\theta[u(t)]$ is
+eventually constant.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) $\TV_h$ and the jumps do not see the constant $\bar u$ and are
+homogeneous of degree one in $c\,e^{\lambda t}$; the rest is
+Corollary~\ref{cor:deficit}. (2) $\varphi$ and $\psi$ are continuous and
+the sums are finite; the criterion is Corollary~\ref{cor:deficit} applied
+to $u_\infty$. A constant field has a uniform picture. (3) The proof of
+Theorem~\ref{thm:grid}(2) applies verbatim to the pair
+$(u(x),u'(x))$ in place of the two ends of an edge: a time step is an
+edge too. Finally $\lfloor\cdot\rfloor$ is locally constant off $\Z$.
+\end{proof}
+
+Part~(2) is the difference with the heat equation. Neumann heat flow
+tends to a constant, so every jump eventually falls below one quantum
+and the frames end in a single colour. A Turing pattern tends to a
+non-constant steady state, and if its jumps exceed one quantum the
+aliasing never ends.
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}{0.24\textwidth}\centering
+\includegraphics[width=\textwidth]{glyco_field_t0000.pdf}\\[3pt]
+\includegraphics[width=\textwidth]{glyco_parity_t0000.pdf}
+\caption{Noise, $t=0$}\end{subfigure}\hfill
+\begin{subfigure}{0.24\textwidth}\centering
+\includegraphics[width=\textwidth]{glyco_field_t0200.pdf}\\[3pt]
+\includegraphics[width=\textwidth]{glyco_parity_t0200.pdf}
+\caption{Smooth, $t=200$}\end{subfigure}\hfill
+\begin{subfigure}{0.24\textwidth}\centering
+\includegraphics[width=\textwidth]{glyco_field_t0350.pdf}\\[3pt]
+\includegraphics[width=\textwidth]{glyco_parity_t0350.pdf}
+\caption{Breakdown, $t=350$}\end{subfigure}\hfill
+\begin{subfigure}{0.24\textwidth}\centering
+\includegraphics[width=\textwidth]{glyco_field_t1000.pdf}\\[3pt]
+\includegraphics[width=\textwidth]{glyco_parity_t1000.pdf}
+\caption{Static, $t=1000$}\end{subfigure}
+\caption{The glycolysis model \eqref{eq:selkov} with the parameters of
+\cite[Fig.~4]{Glyco}. Top: $u$ in grey, rescaled to its own range in
+each frame. Bottom: the parity of $\lfloor10^4u\rfloor$. The field is
+noise only at $t=0$; after that it is a smooth pattern that grows and
+settles into spots. The parity picture is faithful only in~(b). In~(c)
+it shows moir\'e, and in~(d) it is static, although the field is a few
+smooth spots.}
+\label{fig:glyco}
+\end{figure}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}rrrrrrrr@{}}
+\toprule
+$t$ & range of $u$ & bands & $q\TV_h$ & $\sum_e\varphi(q|\Delta_eu|)$ & $D_h$ & $\max_eq|\Delta_eu|$ & flicker \\
+\midrule
+0 & $1.00\cdot10^{-2}$ & 99 & 677626 & 10120 & 667506 & 98.96 & --- \\
+10 & $8.00\cdot10^{-4}$ & 8 & 1724 & 1724 & 0 & 0.36 & 0.5012 \\
+50 & $4.77\cdot10^{-4}$ & 4 & 1159 & 1159 & 0 & 0.22 & 0.4908 \\
+100 & $5.40\cdot10^{-4}$ & 5 & 1299 & 1299 & 0 & 0.24 & 0.5106 \\
+150 & $7.74\cdot10^{-4}$ & 8 & 1936 & 1936 & 0 & 0.35 & 0.5219 \\
+200 & $1.31\cdot10^{-3}$ & 13 & 3217 & 3217 & 0 & 0.56 & 0.4984 \\
+250 & $2.32\cdot10^{-3}$ & 23 & 5519 & 5519 & 0 & 0.92 & 0.5351 \\
+300 & $4.05\cdot10^{-3}$ & 41 & 9546 & 8929 & 617 & 1.56 & 0.4918 \\
+350 & $7.05\cdot10^{-3}$ & 71 & 16551 & 10068 & 6483 & 2.70 & 0.4982 \\
+400 & $1.22\cdot10^{-2}$ & 123 & 28716 & 10589 & 18126 & 4.68 & 0.5004 \\
+500 & $3.69\cdot10^{-2}$ & 368 & 86416 & 9899 & 76517 & 14.13 & 0.4952 \\
+600 & $1.10\cdot10^{-1}$ & 1097 & 258238 & 10104 & 248134 & 42.90 & 0.4977 \\
+800 & $5.31\cdot10^{-1}$ & 5309 & 1399588 & 10138 & 1389450 & 228.75 & 0.4984 \\
+1000 & $5.92\cdot10^{-1}$ & 5915 & 1853006 & 10144 & 1842862 & 268.60 & 0.4973 \\
+1500 & $5.61\cdot10^{-1}$ & 5606 & 1967611 & 10173 & 1957438 & 269.68 & 0.5002 \\
+2000 & $5.61\cdot10^{-1}$ & 5606 & 1967612 & 10174 & 1957438 & 269.66 & 0.4254 \\
+2500 & $5.61\cdot10^{-1}$ & 5606 & 1967612 & 10174 & 1957438 & 269.66 & 0.0008 \\
+3000 & $5.61\cdot10^{-1}$ & 5606 & 1967612 & 10174 & 1957438 & 269.66 & 0.0000 \\
+\bottomrule
+\end{tabular}
+\caption{The measures of Theorem~\ref{thm:grid} and
+Corollary~\ref{cor:deficit} for Figure~\ref{fig:glyco}, $q=10^4$,
+$|E|=20200$. The Monte-Carlo average of $P_h$ over $64$ phases agrees
+with the formula column to $0.5\%$ throughout. Flicker is the right side
+of \eqref{eq:flicker} between consecutive rows; the fraction of cells
+that changed colour, averaged over $64$ phases, agrees with it to
+$0.003$.}
+\label{tab:glyco}
+\end{table}
+
+Table~\ref{tab:glyco} and Figure~\ref{fig:glyco} show four stages.
+\emph{Noise} ($t=0$): the initial perturbation jumps by up to
+$99$ quanta between neighbours, so the first frame is aliased. Diffusion
+removes these short modes within ten time units. \emph{Smooth}
+($10\lesssim t<t^\ast$): every jump is below one quantum, $D_h=0$, and
+the picture is the exact contour map, with $\E_\theta P_h=q\TV_h$. By
+$t\approx100$ the slowest stable modes have decayed and the unstable
+mode dominates. It keeps its shape and grows, so the picture
+looks stable while its rings multiply ($5$ bands at $t=100$, $23$ at
+$t=250$). A least-squares fit of $\log q\TV_h$ on $[200,350]$ gives the
+rate $0.01094$, against $\lambda=0.01103$ from linear theory. Counting
+contours measures the leading Turing eigenvalue. \emph{Breakdown}: the
+largest jump crosses one quantum at $t^\ast=$ $257.8$, as part~(1)
+predicts from the fitted rate and the jump at $t=250$. The deficit $D_h$
+opens and the zone-plate moir\'e of Section~\ref{sec:moire} appears
+around the extrema. \emph{Static}: the amplitude saturates at a range of
+about $0.56$ (the colour scale of \cite[Fig.~4c]{Glyco}), and the
+largest jump of the steady state is $0.0270$, that is $270$ quanta.
+$\E_\theta P_h$ is pinned near $|E|/2$, the block entropy is at its
+maximum, and $D_h$ carries $99.5\%$ of $q\TV_h$. By part~(2) the
+static is permanent, and for this grid it is permanent for every
+$q>1/0.0270\approx37$. A faithful contour map of the final spots on
+this grid has at most about $20$ bands. By part~(3), the static still
+changes from frame to frame long after the pattern has formed: between
+$t=1500$ and $2000$ the field moves by at most $1.8\cdot10^{-4}$, under
+two quanta, and $43\%$ of the cells change colour. Only after
+$t\approx2500$, when the field moves by less than $10^{-6}$, does the
+static freeze.
+
+The two examples are mirror images. In the heat equation the field loses
+structure monotonically, and aliasing \emph{manufactures} a rise of the
+complexity proxies. In the Turing instability the field gains structure:
+symmetry breaks, and $q\TV_h$ grows by a factor of about $1700$ from
+$t=50$ to the steady state. Yet after $t^\ast$ the proxies are flat at
+their maxima, and aliasing \emph{hides} the growth. They read the same
+for the growing pattern at $t=600$, whose $q\TV_h$ is still $7.6$ times
+below its final value, and for the frozen one at $t=3000$.
+In both cases the deficit $D_h$ of Corollary~\ref{cor:deficit} is the
+exact measure of the part of the picture that is sampling.
+
 \section{What is not claimed, and what the lesson is}\label{sec:lesson}
 
 The number of components of the pattern, and the number of local maxima
@@ -331,8 +538,16 @@ are no eddies: for $t>0$ the field is analytic with smooth nested
 isotherms. The lesson is methodological. Perimeter, block
 entropy and component counts of a thresholded simulation measure the
 sampling as much as the dynamics; the phase-averaging identity
-\eqref{eq:phase} is a diagnostic, since a phase-averaged perimeter
-exceeding $q\TV_h$ is aliasing by Theorem~\ref{thm:grid}(3). Real
+\eqref{eq:phase} is a diagnostic: by Corollary~\ref{cor:deficit} the
+deficit $q\TV_h-\E_\theta P_h$ is exactly the part of the picture
+produced by the sampling, whether the field is decaying
+(Section~\ref{sec:grid}) or growing (Section~\ref{sec:turing}). Aliasing
+can manufacture apparent complexity and it can hide real complexity, and
+a thresholded picture alone cannot tell which. The practical rule is to
+choose the quantum against the largest jump the field will reach, not
+against the first frames: $q\max_e|\Delta_eu|\le1$ at all times, or a
+quantum rescaled to the current range of the field, as a colour bar
+is. Real
 complexity requires the nonlinearity inside the dynamics: putting the
 modulus into the update rule instead of the display gives Wolfram's
 continuous cellular automata \cite[ch.~4]{NKS}, coupled map lattices in
@@ -362,25 +577,54 @@ Theorem~\ref{thm:entropy} shows that these choices can make the block
 entropy anything between zero and its maximum. The random-phase
 identity \eqref{eq:phase} is the diagnostic that separates the two
 cases: a phase-averaged perimeter above $q\TV_h$ is sampling, not
-structure. A system has to do more than produce pictures that look
+structure. The Turing example of Section~\ref{sec:turing} shows the
+converse failure. There structure does increase, through a symmetry-breaking
+instability with no selection involved, and the same proxies stop
+registering it at $t^\ast$. They report identical values for a pattern
+that is still growing and for one that is frozen. A system has to do more than produce pictures that look
 complex before the question of selection can even be asked; in the
 companion paper \cite{MirrorWalls} we take automata that do sustain
 persistent localized structures and ask whether the walls of a box act
 on them as a selecting environment.
 
-\section*{Code}
-All scripts, the figures and the source of this article are public at
-\url{https://github.com/MiguelPerezI/heat-parity-ca}: \texttt{analyze.py}
-reproduces the frames and the measures of Table~\ref{tab:res},
-\texttt{restest.py} the resolution test, and \texttt{phase\_theorem.py}
-checks Theorem~\ref{thm:grid} and produces Table~\ref{tab:phase}.
+\section*{Declarations}
+
+\paragraph{Code availability.} All scripts, the figures and the source
+of this article are public at
+\url{https://github.com/MiguelPerezI/heat-parity-ca}. The script
+\texttt{analyze.py} reproduces the frames and the measures of
+Table~\ref{tab:res}, \texttt{restest.py} the resolution test,
+\texttt{phase\_theorem.py} checks Theorem~\ref{thm:grid} and produces
+Table~\ref{tab:phase}, and \texttt{glyco.py} runs the glycolysis model
+of Section~\ref{sec:turing} and produces Table~\ref{tab:glyco} and
+Figure~\ref{fig:glyco}. They need only Python and NumPy.
+
+\paragraph{Funding.} No funding was received for this work.
+
+\paragraph{Competing interests.} The author has no competing interests
+to declare.
+
+\paragraph{Use of AI tools.} A large language model (Claude, Anthropic)
+was used as an assistant in writing the analysis scripts, running the
+numerical checks and drafting the text. The author checked every
+statement, proof and number in the article and is responsible for its
+content.
+
+\section*{About the author}
+
+\noindent\textbf{Miguel Esteban P\'erez Ibarra} studied at the Escuela
+Superior de F\'isica y Matem\'aticas of the Instituto Polit\'ecnico
+Nacional in Mexico City, and works independently on discrete models of
+physical systems and on what their pictures do and do not show.\\[4pt]
+\textit{Mexico}\\
+\href{mailto:supersluky@gmail.com}{\texttt{supersluky@gmail.com}}
 
 \begin{thebibliography}{99}
 \bibitem{TernaryCube}
-M.~E.~P\'erez Ibarra, J.~Flores Rodr\'iguez,
+M.~E.~P\'erez Ibarra,
 \emph{One case, not twenty-seven: the ternary cube as the index set for
 boundary stencils of finite-difference schemes in any dimension},
-arXiv preprint (2026). [Insert arXiv identifier.]
+in preparation (2026).
 \bibitem{NKS}
 S.~Wolfram, \emph{A New Kind of Science}, Wolfram Media, 2002.
 \bibitem{Magnanini}
@@ -400,8 +644,10 @@ automata}, Comm.\ Math.\ Phys.\ 93 (1984) 219--258.
 \bibitem{Kaneko}
 K.~Kaneko, \emph{Overview of coupled map lattices}, Chaos 2 (1992) 279--282.
 \bibitem{Hologram}
-Analysis on image recovery for digital Fresnel hologram with aliased
-fringe generated from self-similarity of point spread function,
+B.~G.~Chae, \emph{Analysis on image recovery for digital Fresnel
+hologram with aliased fringe generated from self-similarity of point
+spread function}, Opt.\ Commun.\ (2020),
+\href{https://doi.org/10.1016/j.optcom.2020.125609}{doi:10.1016/j.optcom.2020.125609};
 arXiv:1911.07997.
 \bibitem{Wong2023}
 M.~L.~Wong, C.~E.~Cleland, D.~Arend~Jr., S.~Bartlett, H.~J.~Cleaves~II,
@@ -415,10 +661,21 @@ J.~W.~Szostak, \emph{Functional information: molecular messages}, Nature
 R.~M.~Hazen, P.~L.~Griffin, J.~M.~Carothers, J.~W.~Szostak,
 \emph{Functional information and the emergence of biocomplexity},
 Proc.\ Natl.\ Acad.\ Sci.\ USA 104 (2007) 8574--8581.
+\bibitem{Glyco}
+L.~A.~Cisneros-Ake, J.~C.~Gonzalez-Rodriguez, L.~R.~Gonz\'alez-Ram\'irez,
+\emph{Turing instabilities and rotating spiral waves in glycolytic
+processes}, Bull.\ Math.\ Biol.\ 84 (2022) 100.
+\bibitem{Turing}
+A.~M.~Turing, \emph{The chemical basis of morphogenesis}, Phil.\ Trans.\
+R.\ Soc.\ Lond.\ B 237 (1952) 37--72.
+\bibitem{AshkenaziOthmer}
+M.~Ashkenazi, H.~G.~Othmer, \emph{Spatial patterns in coupled biochemical
+oscillators}, J.\ Math.\ Biol.\ 5 (1978) 305.
 \bibitem{MirrorWalls}
-M.~E.~P\'erez Ibarra, J.~Flores Rodr\'iguez,
+M.~E.~P\'erez Ibarra,
 \emph{Reflecting walls are self-collisions: localized structures of
-cellular automata in a mirror box}, in preparation (2026).
+cellular automata in a mirror box}, in preparation (2026). Code:
+\url{https://github.com/MiguelPerezI/mirror-walls}.
 \end{thebibliography}
 
 \end{document}
